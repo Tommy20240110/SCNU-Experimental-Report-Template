@@ -1,0 +1,80 @@
+\documentclass{SCNU_Experimental_Report}
+
+% 填写报告头信息
+\studentname{Tommy}
+\studentid{20240110}
+\major{电子信息工程}
+\class{24级01班}
+\coursename{数字图像处理}
+\projectname{图像处理的基本操作和图像直方图均衡化}
+\verify
+\experimentdate{2024年10月1日}
+\teacher{Tommy}
+
+\begin{document}
+\maketitle
+
+\section{实验目的}
+\begin{enumerate}
+    \item 掌握图像的离散傅里叶变换的幅度谱和相位谱；
+    \item 通过实验了解二维频谱的分布特点；
+    \item 熟练掌握 FFT 的变换方法及应用；
+    \item 熟练掌握傅里叶变换的基本性质。
+\end{enumerate}
+
+\section{实验平台}
+装有 MATLAB 软件的计算机一台
+
+\section{实验内容}
+\begin{enumerate}
+    \item 显示图像的离散傅里叶变换的幅度谱和相位谱；
+    \item 二维离散傅里叶逆变换；
+    \item 傅里叶变换谱实部的二维离散傅里叶逆变换；
+    \item 傅里叶变换相位信息的二维离散傅里叶逆变换；
+    \item 图像二维离散傅里叶变换的性质。
+\end{enumerate}
+
+\section{实验原理}
+当数字图像 \(f(x,y)\) 为 \(N \times N\) 个像素时，其对应的二维离散傅里叶变换为：
+\begin{equation}
+    F(u,v) = \frac{1}{N}\sum_{x=0}^{N-1}\sum_{y=0}^{N-1} f(x,y) \exp\left[-\frac{\mathrm{j}2\pi(ux+vy)}{N}\right], \quad u,v = 0,1,\ldots,N-1
+\end{equation}
+从图像的二维离散傅里叶变换幅度谱中可见：一般图像的频谱大部分集中在直流和低频区域，而高频成分相对分量较低，高频信息对应着图像的细节或边界或突变地方或噪声；图像低频信息对应着变化缓慢区域。在数字图像中，相位信息非常重要，因为相位信息中携带着图像的边界位置等结构信息。
+二维离散傅里叶逆变换为：
+\begin{equation}
+    f(x,y) = \frac{1}{N}\sum_{u=0}^{N-1}\sum_{v=0}^{N-1} F(u,v) \exp\left[\frac{\mathrm{j}2\pi(ux+vy)}{N}\right]
+\end{equation}
+\subsection{二维离散傅里叶变换的性质}
+若傅里叶变换对表示如下：\(f(x,y) \Leftrightarrow F(u,v)\)
+
+\section{实验步骤}
+\subsection{显示图像的离散傅里叶变换的幅度谱和相位谱}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{fig1.png}
+    \caption{原图}
+\end{figure}
+
+\section{思考题}
+\subsection{二维离散傅里叶的可分离性有什么意义？}
+答：二维离散傅里叶变换的可分离性意味着可以将二维 DFT 分解为两次一维 DFT 的连续计算（先对每一行进行一维 DFT，再对每一列进行一维 DFT）。其意义在于计算效率大幅提升：直接计算二维 DFT 的复杂度为 \(O(N^4)\)，利用可分离性可降至 \(O(2N^3)\)，而 FFT 可进一步降至 \(O(N^2 \log N)\)。
+
+\section{基础三线表}
+\begin{table}[H]
+    \centering
+    \caption{MATLAB 数据类型对照表}
+    \label{tab:datatype}
+    \begin{tabular}{clc}
+        \toprule
+        类型 & 描述 & 范围 \\
+        \midrule
+        uint8 & 无符号8位整数 & 0 -- 255 \\
+        uint16 & 无符号16位整数 & 0 -- 65535 \\
+        int8 & 有符号8位整数 & -128 -- 127 \\
+        double & 双精度浮点数 & $-10^{308}$ -- $10^{308}$ \\
+        logical & 逻辑值 & 0 或 1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\end{document}

@@ -43,11 +43,11 @@
 ]{KaiTi_GB2312}
 % 黑体
 \newCJKfontfamily\heibody[
-    Path = C:/Windows/Fonts/,
+    Path = ./fonts/,
     Extension = .ttf,
     UprightFont = *,
     BoldFont = *,
-]{simhei}
+]{SimHei}
 % 仿宋 (GB2312)
 \newCJKfontfamily\fangsongbody[
     Path = ./fonts/,
@@ -55,6 +55,14 @@
     UprightFont = *,
     BoldFont = *,
 ]{FangSong_GB2312}
+% 中文默认字体
+\setCJKmainfont{FangSong_GB2312}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *,
+    BoldFont = *,
+    AutoFakeBold = 2,
+]
 
 % 字号
 % 总标题: 28号
@@ -79,7 +87,7 @@
 }
 % 一级标题: 黑体 16号 不加粗 左对齐
 \titleformat{\section}
-{\heibody\sectionfontsize\normalfont}
+{\heibody\sectionfontsize}
 {\thesection.}{0.5em}{}
 \titlespacing{\section}{0pt}{12pt}{8pt}
 % 二级标题: 楷体_GB2312 16号 加粗

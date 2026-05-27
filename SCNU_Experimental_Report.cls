@@ -116,6 +116,34 @@
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 
+% 外部 PDF 文件
+\RequirePackage{pdfpages}
+
+% 代码块
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\definecolor{codekeyword}{RGB}{0, 0, 179}       % 关键字蓝色
+\definecolor{codecomment}{RGB}{102, 102, 102}   % 注释灰色
+\definecolor{coderule}{RGB}{204, 204, 204}      % 边框浅灰
+\lstset{
+    numbers=left,                               % 行号在左侧
+    numberstyle=\tiny\color{gray},              % 行号小号灰色
+    keywordstyle=\color{codekeyword}\bfseries,  % 关键字蓝色加粗
+    commentstyle=\color{codecomment}\itshape,   % 注释灰色斜体
+    frame=shadowbox,                            % 阴影边框
+    rulesepcolor=\color{coderule},              % 边框阴影颜色
+    escapeinside=``,                            % 转义符, 可在代码中用 LaTeX 命令
+    xleftmargin=2em,                            % 左缩进
+    xrightmargin=2em,                           % 右缩进
+    aboveskip=1em,                              % 上方间距
+    belowskip=1em,                              % 下方间距
+    basicstyle=\ttfamily\small,                 % 等宽字体小号
+    breaklines=true,                            % 自动换行
+    tabsize=4,                                  % 缩进 4 空格
+    showstringspaces=false,                     % 不显示字符串空格
+    stringstyle=\color{blue!60},                % 字符串蓝色
+}
+
 % 参考文献
 \RequirePackage[backend=biber, style=ieee, sorting=none]{biblatex}
 \addbibresource{./cite.bib}

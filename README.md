@@ -1,25 +1,33 @@
 # `SCNU_Experimental_Report` 模板使用说明
+
 ## 模板简介
 本模板是为华南师范大学（SCNU）实验报告设计的 LaTeX 模板，基于 `article` 类定制，符合学校实验报告格式要求。
 
+**特点：**
+- 所有字体均从 `./fonts/` 文件夹加载，无需安装到系统字体目录
+- 支持直接导入外部 PDF 文件（如代码附录、原始数据记录）
+- 使用 `xeCJKfntef` 实现下划线自动换行
+
 ## 文件结构
 ```
-SCNU Experimental Report Template
+SCNU_Experimental_Report_Template/
 ├─ cite.bib                         % 参考文献数据库（可选）
-├─ Example                          % 示例文件夹
+├─ Example/                         % 示例文件夹
 │  ├─ Example.pdf
 │  └─ Example.tex
-├─ figures                          % 图片文件夹
-├─ fonts                            % 字体文件夹（可选）
-│  ├─ FangSong_GB2312.ttf
-│  └─ KaiTi_GB2312.ttf
-├─ README.md
-├─ scnu.png                         % 校徽图片（可选）
+├─ figures/                         % 图片文件夹
+├─ fonts/                           % 字体文件夹（必须）
+│  ├─ FangSong_GB2312.ttf          % 仿宋_GB2312
+│  ├─ KaiTi_GB2312.ttf             % 楷体_GB2312
+│  └─ SimHei.ttf                   % 黑体
+├─ tables/                          % 表格文件夹（可选）
+├─ scnu.png                         % 校徽图片（可选，用于报告头）
 ├─ SCNU_Experimental_Report.cls     % 模板文件（必须）
-└─ tables                           % 表格文件夹
+└─ README.md
 ```
 
 ## 快速开始
+
 ### 1. 基本使用
 ```latex
 \documentclass{SCNU_Experimental_Report}
@@ -51,7 +59,7 @@ SCNU Experimental Report Template
 \synthesis  % 选中“综合”
 ```
 
-### 3. 章节标题
+### 3. 章节标题格式
 | 命令 | 字体 | 字号 | 加粗 |
 |------|------|------|------|
 | `\section{标题}` | 黑体 | 16号 | 否 |
@@ -72,7 +80,7 @@ SCNU Experimental Report Template
 \end{enumerate}
 ```
 
-### 5. 图片插入
+### 5. 图片
 ```latex
 \begin{figure}[htbp/H]
     \centering
@@ -86,6 +94,7 @@ SCNU Experimental Report Template
 - 使用 `[H]` 可强制放在当前位置（需 `float` 包）
 
 ### 6. 表格
+
 **三线表：**
 ```latex
 \begin{table}[htbp]
@@ -137,7 +146,27 @@ $E = mc^2$
 \end{cases}
 ```
 
-### 8. 参考文献
+### 8. 导入外部 PDF 文件
+适用于插入代码清单、原始数据记录、实验原始手稿等。
+
+```latex
+% 导入单页
+\includepdf[pages={1}]{附录代码.pdf}
+
+% 导入多页（1,2,3页）
+\includepdf[pages={1-3}]{附录代码.pdf}
+
+% 导入所有页
+\includepdf[pages=-]{附录代码.pdf}
+
+% 添加空白页使 PDF 从奇数页开始
+\includepdf[pages=-, pagecommand={\thispagestyle{plain}}]{附录代码.pdf}
+```
+
+> 注意：`\includepdf` 由 `pdfpages` 宏包提供，模板已自动加载。
+
+### 9. 参考文献
+
 **创建 `cite.bib` 文件：**
 ```bib
 @book{key2024,
@@ -163,20 +192,22 @@ xelatex Example.tex
 xelatex Example.tex
 ```
 
-### 9. 下划线（自动换行）
+### 10. 下划线（自动换行）
 ```latex
 \ul{需要下划线的文字}
 ```
 使用 `xeCJKfntef` 包，支持中文自动换行。
 
 ## 编译方法
+
 ### 方法一：命令行
 ```bash
 xelatex Example.tex
 ```
 
 ### 方法二：VS Code（推荐）
-安装 `LaTeX Workshop` 插件，配置 `settings.json`：
+安装 `LaTeX Workshop` 插件，在 `settings.json` 中添加以下配置：
+
 ```json
 {
     "latex-workshop.latex.recipes": [
@@ -194,4 +225,13 @@ xelatex Example.tex
     ]
 }
 ```
-在拓展中执行编译命令
+
+然后在 `LaTeX Workshop` 侧边栏选择 `xelatex` 配方进行编译。
+
+> 若包含参考文献，需将 recipe 改为 `xelatex -> biber -> xelatex -> xelatex`。
+
+## 注意事项
+1. **字体文件夹**：编译时必须存在 `fonts/` 文件夹，并包含 `FangSong_GB2312.ttf`、`KaiTi_GB2312.ttf`、`SimHei.ttf` 三个字体文件，模板不会调用系统字体。
+2. **校徽图片**：若不需要校徽可删除 `scnu.png`，但需注释或移除 `\maketitle` 中 `\includegraphics{scnu.png}` 部分。
+3. **编码**：所有 `.tex` 文件请使用 UTF-8 编码保存。
+4. **编译引擎**：必须使用 `xelatex`。

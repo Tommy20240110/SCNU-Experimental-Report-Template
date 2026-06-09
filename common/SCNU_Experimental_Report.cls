@@ -36,28 +36,28 @@
 \RequirePackage{xeCJK}
 % 楷体 (GB2312)
 \newCJKfontfamily\kaibody[
-    Path = ./fonts/,
+    Path = ../common/fonts/,
     Extension = .ttf,
     UprightFont = *,
     BoldFont = *,
 ]{KaiTi_GB2312}
 % 黑体
 \newCJKfontfamily\heibody[
-    Path = ./fonts/,
+    Path = ../common/fonts/,
     Extension = .ttf,
     UprightFont = *,
     BoldFont = *,
 ]{SimHei}
 % 仿宋 (GB2312)
 \newCJKfontfamily\fangsongbody[
-    Path = ./fonts/,
+    Path = ../common/fonts/,
     Extension = .ttf,
     UprightFont = *,
     BoldFont = *,
 ]{FangSong_GB2312}
 % 中文默认字体
 \setCJKmainfont{FangSong_GB2312}[
-    Path = ./fonts/,
+    Path = ../common/fonts/,
     Extension = .ttf,
     UprightFont = *,
     BoldFont = *,
@@ -213,7 +213,7 @@
 \renewcommand{\maketitle}{
     % Logo
     \begin{textblock}{50}(10, 20)
-        \includegraphics[width=5cm]{scnu.png}
+        \includegraphics[width=5cm]{../common/logo.png}
     \end{textblock}
     % 总标题
     \begin{center}

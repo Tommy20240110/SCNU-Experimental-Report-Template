@@ -4,33 +4,60 @@
 本模板是为华南师范大学（SCNU）实验报告设计的 LaTeX 模板，基于 `article` 类定制，符合学校实验报告格式要求。
 
 **特点：**
-- 所有字体均从 `./fonts/` 文件夹加载，无需安装到系统字体目录
+- 所有字体均从 `common/fonts/` 文件夹加载，无需安装到系统字体目录
 - 支持直接导入外部 PDF 文件（如代码附录、原始数据记录）
 - 使用 `xeCJKfntef` 实现下划线自动换行
+- 支持多实验独立项目（每个实验一个文件夹）
 
 ## 文件结构
 ```
-SCNU_Experimental_Report_Template/
-├─ cite.bib                         % 参考文献数据库（可选）
-├─ Example/                         % 示例文件夹
-│  ├─ Example.pdf
-│  └─ Example.tex
-├─ figures/                         % 图片文件夹
-├─ fonts/                           % 字体文件夹（必须）
-│  ├─ FangSong_GB2312.ttf          % 仿宋_GB2312
-│  ├─ KaiTi_GB2312.ttf             % 楷体_GB2312
-│  └─ SimHei.ttf                   % 黑体
-├─ tables/                          % 表格文件夹（可选）
-├─ scnu.png                         % 校徽图片（可选，用于报告头）
-├─ SCNU_Experimental_Report.cls     % 模板文件（必须）
-└─ README.md
+SCNU Experimental Report Template
+├─ common                           % 公共模板文件夹
+│  ├─ fonts                         % 字体文件夹（必须）
+│  │  ├─ FangSong_GB2312.ttf        % 仿宋_GB2312
+│  │  ├─ KaiTi_GB2312.ttf           % 楷体_GB2312
+│  │  └─ SimHei.ttf                 % 黑体
+│  ├─ logo.png                      % 校徽图片（可选，用于报告头）
+│  └─ SCNU_Experimental_Report.cls  % 模板文件（必须）
+├─ Multiterm1                       % 多项目示例文件夹
+│  ├─ cite.bib                      % 参考文献数据库（可选）
+│  ├─ Example1.tex                  % 多项目示例.tex文件
+│  ├─ figures                       % 图片文件夹
+│  │  ├─ Ex1_Fig1.jpg
+│  │  ├─ Ex1_Fig2.jpg
+│  │  ├─ Ex1_Fig3.jpg
+│  │  └─ Ex1_Fig4.jpg
+│  ├─ Record.pdf                    % 实验记录 PDF
+│  └─ tables                        % 表格文件夹（可选）
+├─ Multiterm2                       % 多项目示例文件夹（同 Multiterm1）
+│  ├─ cite.bib
+│  ├─ Example2.tex
+│  ├─ figures
+│  │  ├─ Ex1_Fig1.jpg
+│  │  ├─ Ex1_Fig2.jpg
+│  │  ├─ Ex1_Fig3.jpg
+│  │  └─ Ex1_Fig4.jpg
+│  ├─ Record.pdf
+│  └─ tables
+├─ README.md
+└─ Single                           % 单项目示例文件夹
+   ├─ cite.bib
+   ├─ Example.tex
+   ├─ figures
+   │  ├─ Ex1_Fig1.jpg
+   │  ├─ Ex1_Fig2.jpg
+   │  ├─ Ex1_Fig3.jpg
+   │  └─ Ex1_Fig4.jpg
+   ├─ Record.pdf
+   └─ tables
+
 ```
 
 ## 快速开始
 
 ### 1. 基本使用
 ```latex
-\documentclass{SCNU_Experimental_Report}
+\documentclass{../common/SCNU_Experimental_Report}
 
 % 填写报告头信息
 \studentname{你的姓名}
@@ -184,14 +211,6 @@ $E = mc^2$
 \printbibliography  % 文末输出参考文献列表
 ```
 
-**编译命令：**
-```bash
-xelatex Example.tex
-biber Example
-xelatex Example.tex
-xelatex Example.tex
-```
-
 ### 10. 下划线（自动换行）
 ```latex
 \ul{需要下划线的文字}
@@ -200,38 +219,46 @@ xelatex Example.tex
 
 ## 编译方法
 
-### 方法一：命令行
-```bash
-xelatex Example.tex
-```
+### 方法一：VS Code（推荐）
+1. 安装 `LaTeX Workshop` 插件
+2. 打开任意实验文件夹下的 `.tex` 文件
+3. 在 `LaTeX Workshop` 拓展 → 选择 `latexmk (xelatex)`
+4. 编译后 PDF 生成在 `.build/` 文件夹下
 
-### 方法二：VS Code（推荐）
-安装 `LaTeX Workshop` 插件，在 `settings.json` 中添加以下配置：
-
-```json
-{
-    "latex-workshop.latex.recipes": [
-        {
-            "name": "xelatex",
-            "tools": ["xelatex"]
-        }
-    ],
-    "latex-workshop.latex.tools": [
-        {
-            "name": "xelatex",
-            "command": "xelatex",
-            "args": ["-synctex=1", "-interaction=nonstopmode", "%DOC%"]
-        }
-    ]
-}
-```
-
-然后在 `LaTeX Workshop` 侧边栏选择 `xelatex` 配方进行编译。
+> 默认配置即可编译，无需额外配置 `settings.json`
 
 > 若包含参考文献，需将 recipe 改为 `xelatex -> biber -> xelatex -> xelatex`。
 
+### 方法二：命令行
+
+```bash
+cd Ex1
+set TEXINPUTS=../common//;../common/fonts//;
+latexmk -xelatex -output-directory=.build report.tex
+```
+
+### 带参考文献的完整编译
+
+```bash
+cd Ex1
+set TEXINPUTS=../common//;../common/fonts//;
+latexmk -xelatex -output-directory=.build report.tex
+biber .build/report
+latexmk -xelatex -output-directory=.build report.tex
+latexmk -xelatex -output-directory=.build report.tex
+```
+
 ## 注意事项
-1. **字体文件夹**：编译时必须存在 `fonts/` 文件夹，并包含 `FangSong_GB2312.ttf`、`KaiTi_GB2312.ttf`、`SimHei.ttf` 三个字体文件，模板不会调用系统字体。
-2. **校徽图片**：若不需要校徽可删除 `scnu.png`，但需注释或移除 `\maketitle` 中 `\includegraphics{scnu.png}` 部分。
-3. **编码**：所有 `.tex` 文件请使用 UTF-8 编码保存。
-4. **编译引擎**：必须使用 `xelatex`。
+
+1. **字体文件夹**：编译时必须存在 `common/fonts/` 文件夹，并包含：
+   - `FangSong_GB2312.ttf`
+   - `KaiTi_GB2312.ttf`
+   - `SimHei.ttf`
+
+2. **路径写法**：`.tex` 文件中使用 `\documentclass{../common/SCNU_Experimental_Report}`
+
+3. **PDF 位置**：编译后的 PDF 在 `.build/` 文件夹下，不在源文件同目录
+
+4. **编码**：所有 `.tex` 文件请使用 UTF-8 编码保存
+
+5. **编译引擎**：必须使用 `latexmk -xelatex`

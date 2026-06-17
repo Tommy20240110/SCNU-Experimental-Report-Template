@@ -220,14 +220,31 @@ $E = mc^2$
 ## 编译方法
 
 ### 方法一：VS Code（推荐）
+
 1. 安装 `LaTeX Workshop` 插件
-2. 打开任意实验文件夹下的 `.tex` 文件
-3. 在 `LaTeX Workshop` 拓展 → 选择 `latexmk (xelatex)`
-4. 编译后 PDF 生成在 `.build/` 文件夹下
+2. **（推荐）配置 VS Code 设置**，在 `settings.json` 中添加以下内容，将所有编译产物统一输出到 `.build/` 文件夹，保持源文件目录整洁：
 
-> 默认配置即可编译，无需额外配置 `settings.json`
+```json
+{
+    "latex-workshop.latex.outDir": "./.build",
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.latex.autoClean.run": "onFailed"
+}
+```
 
-> 若包含参考文献，需将 recipe 改为 `xelatex -> biber -> xelatex -> xelatex`。
+| 配置项 | 作用 |
+|:---|:---|
+| `latex-workshop.latex.outDir` | 指定所有编译产物（PDF、辅助文件）输出到 `.build/` 文件夹 |
+| `latex-workshop.latex.autoBuild.run` | 设为 `never`，手动编译，避免不必要的自动构建 |
+| `latex-workshop.latex.autoClean.run` | 设为 `onFailed`，编译失败时自动清理临时文件 |
+
+> 💡 若你不需要自定义输出目录，使用默认配置也可正常编译，但编译产物会散落在 `.tex` 文件同目录下。
+
+3. 打开任意实验文件夹下的 `.tex` 文件
+4. 在 `LaTeX Workshop` 扩展中，选择编译 recipe：`latexmk (xelatex)`
+5. 编译后 PDF 自动生成在 `.build/` 文件夹下（与 `.tex` 文件同级）
+
+> 📌 若包含参考文献，需将 recipe 改为 `xelatex -> biber -> xelatex -> xelatex`
 
 ### 方法二：命令行
 
@@ -247,6 +264,8 @@ biber .build/report
 latexmk -xelatex -output-directory=.build report.tex
 latexmk -xelatex -output-directory=.build report.tex
 ```
+
+> 📌 命令行中 `-output-directory=.build` 与 VS Code 配置的 `outDir` 保持一致，均指向 `.build/` 文件夹。
 
 ## 注意事项
 

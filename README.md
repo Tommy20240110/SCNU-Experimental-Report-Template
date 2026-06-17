@@ -53,6 +53,16 @@ SCNU Experimental Report Template
 
 ```
 
+## 运行环境
+
+本模板推荐使用以下环境进行编译：
+
+- **操作系统**：Windows
+- **LaTeX 发行版**：[MiKTeX](https://miktex.org/)（安装时建议勾选“安装缺失的宏包”）
+- **Perl 环境**：[Strawberry Perl](https://strawberryperl.com/)（`latexmk` 和 `biber` 依赖 Perl 运行）
+- **编译方式**：`latexmk -xelatex`（一次编译，自动处理参考文献和交叉引用）
+- **推荐编辑器**：VS Code + LaTeX Workshop 插件
+
 ## 快速开始
 
 ### 1. 基本使用
@@ -219,6 +229,8 @@ $E = mc^2$
 
 ## 编译方法
 
+> 推荐使用 **MiKTeX** 作为 LaTeX 发行版，自带 `latexmk` 工具，可自动处理参考文献和交叉引用，一次编译即可生成完整 PDF。
+
 ### 方法一：VS Code（推荐）
 
 1. 安装 `LaTeX Workshop` 插件
@@ -241,10 +253,10 @@ $E = mc^2$
 > 💡 若你不需要自定义输出目录，使用默认配置也可正常编译，但编译产物会散落在 `.tex` 文件同目录下。
 
 3. 打开任意实验文件夹下的 `.tex` 文件
-4. 在 `LaTeX Workshop` 扩展中，选择编译 recipe：`latexmk (xelatex)`
+4. 在 `LaTeX Workshop` 扩展中，选择编译 recipe：**`latexmk (xelatex)`**
 5. 编译后 PDF 自动生成在 `.build/` 文件夹下（与 `.tex` 文件同级）
 
-> 📌 若包含参考文献，需将 recipe 改为 `xelatex -> biber -> xelatex -> xelatex`
+> 📌 `latexmk (xelatex)` 会自动处理参考文献和交叉引用，一次编译即可完成全部工作，无需手动分步执行。
 
 ### 方法二：命令行
 
@@ -254,18 +266,13 @@ set TEXINPUTS=../common//;../common/fonts//;
 latexmk -xelatex -output-directory=.build report.tex
 ```
 
-### 带参考文献的完整编译
+> 📌 命令行中 `-output-directory=.build` 与 VS Code 配置的 `outDir` 保持一致，均指向 `.build/` 文件夹。`latexmk -xelatex` 会自动检测并处理参考文献和交叉引用，无需额外步骤。
 
-```bash
-cd Ex1
-set TEXINPUTS=../common//;../common/fonts//;
-latexmk -xelatex -output-directory=.build report.tex
-biber .build/report
-latexmk -xelatex -output-directory=.build report.tex
-latexmk -xelatex -output-directory=.build report.tex
-```
+### 补充：MiKTeX 安装建议
 
-> 📌 命令行中 `-output-directory=.build` 与 VS Code 配置的 `outDir` 保持一致，均指向 `.build/` 文件夹。
+- 若尚未安装 MiKTeX，请前往 [MiKTeX 官网](https://miktex.org/) 下载安装
+- 安装时建议选择 **“安装缺失的宏包”**（Install missing packages on-the-fly），编译时若缺少依赖包，MiKTeX 会自动下载安装，无需手动配置
+- **安装 Strawberry Perl**：`latexmk` 和 `biber` 等工具均依赖 Perl 环境运行，MiKTeX 不自带 Perl，需单独安装。请前往 [Strawberry Perl 官网](https://strawberryperl.com/) 下载安装，安装时建议勾选 **“将 Perl 添加到系统 PATH”** 选项。安装完成后，打开命令行输入 `perl --version` 验证是否安装成功。
 
 ## 注意事项
 

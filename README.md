@@ -229,7 +229,16 @@ $E = mc^2$
 
 ## 编译方法
 
-> 推荐使用 **MiKTeX** 作为 LaTeX 发行版，自带 `latexmk` 工具，可自动处理参考文献和交叉引用，一次编译即可生成完整 PDF。
+> 📌 **当前环境**：Windows + MiKTeX（已安装 Strawberry Perl）
+
+本模板支持两种编译方式：
+
+| 编译方式 | 特点 | 适用场景 |
+|:---|:---|:---|
+| `latexmk (xelatex)` | **一次编译，自动处理参考文献和交叉引用** | 推荐，尤其是含参考文献的文档 |
+| `xelatex` | 直接编译，速度更快，但需多次手动运行才能解析引用 | 不含参考文献的简单文档，或临时快速预览 |
+
+---
 
 ### 方法一：VS Code（推荐）
 
@@ -253,12 +262,27 @@ $E = mc^2$
 > 💡 若你不需要自定义输出目录，使用默认配置也可正常编译，但编译产物会散落在 `.tex` 文件同目录下。
 
 3. 打开任意实验文件夹下的 `.tex` 文件
-4. 在 `LaTeX Workshop` 扩展中，选择编译 recipe：**`latexmk (xelatex)`**
+4. 在 `LaTeX Workshop` 扩展中，选择编译 recipe：
+
+| Recipe | 说明 |
+|:---|:---|
+| **`latexmk (xelatex)`** | **推荐**。自动处理参考文献和交叉引用，一次编译即可完成全部工作 |
+| `xelatex` | 直接编译，速度更快。但若含参考文献或交叉引用，需多次编译才能正确解析 |
+
+> ⚠️ 若使用 `xelatex` 直接编译且文档含参考文献或交叉引用，**需要多次运行**才能得到正确结果。完整流程通常为：
+> 1. 先运行一次 `xelatex`
+> 2. 运行 `biber`（若有参考文献）
+> 3. 再运行两次 `xelatex`
+>
+> 在 VS Code 中，可通过点击 LaTeX Workshop 扩展面板的“Build LaTeX project”按钮多次执行编译，或切换至 `latexmk (xelatex)` recipe 一键完成。
+
 5. 编译后 PDF 自动生成在 `.build/` 文件夹下（与 `.tex` 文件同级）
 
-> 📌 `latexmk (xelatex)` 会自动处理参考文献和交叉引用，一次编译即可完成全部工作，无需手动分步执行。
+---
 
 ### 方法二：命令行
+
+#### 使用 `latexmk`（推荐）
 
 ```bash
 cd Ex1
@@ -266,13 +290,31 @@ set TEXINPUTS=../common//;../common/fonts//;
 latexmk -xelatex -output-directory=.build report.tex
 ```
 
-> 📌 命令行中 `-output-directory=.build` 与 VS Code 配置的 `outDir` 保持一致，均指向 `.build/` 文件夹。`latexmk -xelatex` 会自动检测并处理参考文献和交叉引用，无需额外步骤。
+> `latexmk -xelatex` 会自动检测并处理参考文献和交叉引用，无需额外步骤。
+
+#### 使用 `xelatex` 直接编译
+
+```bash
+cd Ex1
+set TEXINPUTS=../common//;../common/fonts//;
+xelatex -output-directory=.build report.tex
+```
+
+> ⚠️ 若文档含参考文献或交叉引用，**需要多次运行**才能得到正确结果。完整流程通常为：
+> ```bash
+> xelatex -output-directory=.build report.tex
+> biber .build/report      # 若有参考文献
+> xelatex -output-directory=.build report.tex
+> xelatex -output-directory=.build report.tex
+> ```
+
+---
 
 ### 补充：MiKTeX 安装建议
 
 - 若尚未安装 MiKTeX，请前往 [MiKTeX 官网](https://miktex.org/) 下载安装
 - 安装时建议选择 **“安装缺失的宏包”**（Install missing packages on-the-fly），编译时若缺少依赖包，MiKTeX 会自动下载安装，无需手动配置
-- **安装 Strawberry Perl**：`latexmk` 和 `biber` 等工具均依赖 Perl 环境运行，MiKTeX 不自带 Perl，需单独安装。请前往 [Strawberry Perl 官网](https://strawberryperl.com/) 下载安装，安装时建议勾选 **“将 Perl 添加到系统 PATH”** 选项。安装完成后，打开命令行输入 `perl --version` 验证是否安装成功。
+- **安装 Strawberry Perl**：`latexmk` 和 `biber` 等工具均依赖 Perl 环境运行，MiKTeX 不自带 Perl，需单独安装。请前往 [Strawberry Perl 官网](https://strawberryperl.com/) 下载安装，安装时建议勾选 **“将 Perl 添加到系统 PATH”** 选项。安装完成后，打开命令行输入 `perl --version` 验证是否安装成功
 
 ## 注意事项
 
